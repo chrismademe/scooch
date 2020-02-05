@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Musevo Artist Deck</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        
+        <!-- 01. Include stylesheet -->
+        <link rel="stylesheet" href="scooch.css" />
+    </head>
+    <body>
+
+        <!-- 02. Scooch Markup -->
+        <div class="scooch">
+            <div class="scooch-slide">
+                Slide 01
+            </div>
+            <div class="scooch-slide">
+                Slide 02
+            </div>
+            <div class="scooch-slide">
+                Slide 03
+            </div>
+        </div>
+
+        <!-- 03. Help key (optional but helpful) -->
+        <div class="scooch-help">
+            <ul>
+                <li>
+                    <kbd>F</kbd> Enter Fullscreen
+                </li>
+                <li>
+                    <kbd>esc</kbd> Exit Fullscreen
+                </li>
+                <li>
+                    <kbd>Right &rarr;</kbd>
+                    <kbd>Space</kbd> Next slide
+                </li>
+                <li>
+                    <kbd>&larr; Left</kbd> Previous slide
+                </li>
+            </ul>
+        </div>
+
+        <!-- 04. Include Scooch JS and instantiate -->
+        <script src="scooch.js"></script>
+        <script>
+            (() => {
+                const slideshow = new Scooch(document.querySelector('.scooch'));
+            })()
+        </script>
+    </body>
+</html>
