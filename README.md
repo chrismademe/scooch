@@ -8,7 +8,7 @@ See demo in `index.html` for a setup guide. **Note** If fullscreen is enabled, t
 
 ## Options
 
-You can pass an optional object to set any of the below items when instantiating Scooch as the second parameter.
+You can pass an optional object to set any of the below items, as the second parameter, when instantiating Scooch.
 
 e.g.
 
