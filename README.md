@@ -1,6 +1,6 @@
 # Scooch
 
-Scooch makes slideshows easy. You bring your own content and styling.
+Scooch makes slideshows easy. You bring your own content and styling. It's super lightweight, around 1kb gzipped and easy to customise.
 
 ## Usage
 
