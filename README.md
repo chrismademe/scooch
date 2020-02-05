@@ -23,6 +23,13 @@ new Scooch(element, { autoplay: false })
 | `keyboardControls` | Enable keyboard controls | `true` |
 | `enableFullscreen` | Allow the slideshow to be made fullscreen | `true` |
 
+## Keyboard Controls
+
+- Next Slide: `Right arrow`, `space`
+- Previous Slide: `Left arrow`
+- Enter Fullscreen: `F`
+- Exit Fullscreen: `esc`
+
 ## Roadmap
 
 - Add lifecycle events (e.g. `init`, `onSlideChange` etc.)
