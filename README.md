@@ -19,7 +19,7 @@ new Scooch(element, { autoplay: false })
 | Key | Description | Default Value |
 |---|---|---|
 | `autoplay ` | Move to the next slide automatically | `false` |
-| `autoplayInterval` | How often (in MS) to change slide, if `autoplay` is `true` | 5000 |
+| `autoplayInterval` | How often (in MS) to change slide, if `autoplay` is `true` | `5000` |
 | `keyboardControls` | Enable keyboard controls | `true` |
 | `enableFullscreen` | Allow the slideshow to be made fullscreen | `true` |
 
