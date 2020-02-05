@@ -30,6 +30,8 @@ new Scooch(element, { autoplay: false })
 - Enter Fullscreen: `F`
 - Exit Fullscreen: `esc`
 
+💡 Tip: Hover over the left bottom corner of the `index.html` demo page to see keyboard controls.
+
 ## Roadmap
 
 - Add lifecycle events (e.g. `init`, `onSlideChange` etc.)
