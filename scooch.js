@@ -1,17 +1,16 @@
-const Scooch = function(node, options = {}) {
-
+const Scooch = function (node, options = {}) {
     // Default options
     let defaultOptions = {
         autoplay: false,
         autoplayInterval: 5000,
         keyboardControls: true,
-        allowFullscreen: true
-    }
+        allowFullscreen: true,
+    };
 
     this.options = Object.assign(defaultOptions, options);
 
     this.node = node;
-    this.slides = this.node.querySelectorAll(".scooch-slide");
+    this.slides = this.node.querySelectorAll('.scooch-slide');
     this.firstSlide = this.slides[0];
     this.lastSlide = this.slides[this.slides.length - 1];
     this.currentSlide = null;
@@ -35,8 +34,8 @@ const Scooch = function(node, options = {}) {
         this.nextSlide = this.firstSlide.nextElementSibling;
 
         // Setup Key Press listeners
-        if ( this.options.keyboardControls ) {
-            document.addEventListener("keyup", this.handleKeyPress.bind(this));
+        if (this.options.keyboardControls) {
+            document.addEventListener('keyup', this.handleKeyPress.bind(this));
         }
     };
 
@@ -85,7 +84,7 @@ const Scooch = function(node, options = {}) {
     };
 
     // Handle Key Press
-    this.handleKeyPress = event => {
+    this.handleKeyPress = (event) => {
         event.preventDefault();
 
         // Previous slide
@@ -100,7 +99,7 @@ const Scooch = function(node, options = {}) {
 
         // Full screen
         if (event.keyCode === 70 && this.options.allowFullscreen) {
-            document.body.requestFullscreen();
+            this.node.requestFullscreen();
         }
     };
 
@@ -108,7 +107,7 @@ const Scooch = function(node, options = {}) {
     this.init();
 
     // Autoplay
-    if ( this.options.autoplay ) {
+    if (this.options.autoplay) {
         setInterval(this.next.bind(this), this.options.autoplayInterval);
     }
 };
