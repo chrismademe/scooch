@@ -2,6 +2,14 @@
 
 Scooch makes slideshows easy. You bring your own content and styling. It's super lightweight, around 1kb gzipped and easy to customise.
 
+## Installation
+
+You can either download the repo, grab the JS and CSS and link them in your HTML, or if you prefer, you can install via NPM:
+
+```bash
+npm install scoochjs --save
+```
+
 ## Usage
 
 See demo in `index.html` for a setup guide.

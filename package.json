@@ -1,0 +1,19 @@
+{
+	"name": "scoochjs",
+	"version": "0.1.0",
+	"description": "A really lightweight, customisable vanilla Javascript carousel",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"No test specified\""
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/chrismademe/scooch.git"
+	},
+	"author": "Chris Galbraith",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/chrismademe/scooch/issues"
+	},
+	"homepage": "https://github.com/chrismademe/scooch#readme"
+}
