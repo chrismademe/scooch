@@ -31,6 +31,14 @@ new Scooch(element, { autoplay: false });
 | `keyboardControls` | Enable keyboard controls                                   | `true`        |
 | `enableFullscreen` | Allow the slideshow to be made fullscreen                  | `true`        |
 
+## Methods
+
+| Method             | Description                                                                   |
+| ------------------ | ----------------------------------------------------------------------------- |
+| `next()`           | Go to the next slide                                                          |
+| `previous()`       | Go to the previous slide                                                      |
+| `goToSlide(index)` | Go to specific slide. `index` should be the array index of the slide to goto. |
+
 ## Keyboard Controls
 
 -   Next Slide: `Right arrow`, `space`
