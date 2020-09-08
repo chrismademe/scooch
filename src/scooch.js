@@ -4,24 +4,24 @@ const Scooch = function (node, options = {}) {
         autoplay: false,
         autoplayInterval: 5000,
         keyboardControls: true,
-        allowFullscreen: true,
+        allowFullscreen: true
     };
 
     this.options = Object.assign(defaultOptions, options);
 
     this.node = node;
-    this.slides = this.node.querySelectorAll('.scooch-slide');
+    this.slides = Array.from(this.node.querySelectorAll('.scooch__slide'));
     this.firstSlide = this.slides[0];
     this.lastSlide = this.slides[this.slides.length - 1];
     this.currentSlide = null;
     this.nextSlide = null;
     this.previousSlide = null;
 
-    /**
-     * Init
-     *
-     * Takes care of setting up the slider
-     */
+	/**
+	 * Init
+	 *
+	 * Takes care of setting up the slider
+	 */
     this.init = () => {
         // Setup the first slide
         this.firstSlide.style.opacity = 1;
@@ -40,47 +40,32 @@ const Scooch = function (node, options = {}) {
     };
 
     this.next = () => {
-        // Check we have a next slide
-        if (this.nextSlide === null) {
-            this.nextSlide = this.firstSlide;
-        }
-
-        // Hide the current slide
-        this.currentSlide.style.opacity = 0;
-
-        // Show the next slide
-        this.nextSlide.style.opacity = 1;
-
-        // Set this as previousSlide
-        this.previousSlide = this.currentSlide;
-
-        // Set the current slide
-        this.currentSlide = this.nextSlide;
-
-        // Get the next slide
-        this.nextSlide = this.nextSlide.nextElementSibling;
+        this.goToSlide(this.slides.indexOf(this.nextSlide));
     };
 
     this.previous = () => {
-        // Check we have a previous slide
-        if (this.previousSlide === null) {
-            this.previousSlide = this.lastSlide;
-        }
+        this.goToSlide(this.slides.indexOf(this.previousSlide));
+    };
 
-        // Hide the current slide
+    this.goToSlide = (index) => {
+        // Check the slide index exists
+        if (!this.slides[index]) return;
+        let slide = this.slides[index];
+
+        // Check if it matches lastSlide
+        this.previousSlide =
+            slide === this.firstSlide ? this.lastSlide : this.slides[index - 1];
+
+        // Check if it matches firstSlide
+        this.nextSlide =
+            slide === this.lastSlide ? this.firstSlide : this.slides[index + 1];
+
+        // Hide the currentSlide
         this.currentSlide.style.opacity = 0;
 
-        // Show the next slide
-        this.previousSlide.style.opacity = 1;
-
-        // Set this as nextSlide
-        this.nextSlide = this.currentSlide;
-
-        // Set the current slide
-        this.currentSlide = this.previousSlide;
-
-        // Update previous slide
-        this.previousSlide = this.currentSlide.previousElementSibling;
+        // Set new slide
+        this.currentSlide = slide;
+        this.currentSlide.style.opacity = 1;
     };
 
     // Handle Key Press
@@ -99,7 +84,7 @@ const Scooch = function (node, options = {}) {
 
         // Full screen
         if (event.keyCode === 70 && this.options.allowFullscreen) {
-            this.node.requestFullscreen();
+            document.body.requestFullscreen();
         }
     };
 
