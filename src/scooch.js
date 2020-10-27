@@ -4,7 +4,8 @@ const Scooch = function (node, options = {}) {
         autoplay: false,
         autoplayInterval: 5000,
         keyboardControls: true,
-        allowFullscreen: true
+        allowFullscreen: true,
+        scrollToChange: true
     };
 
     this.options = Object.assign(defaultOptions, options);
@@ -36,6 +37,11 @@ const Scooch = function (node, options = {}) {
         // Setup Key Press listeners
         if (this.options.keyboardControls) {
             document.addEventListener('keyup', this.handleKeyPress.bind(this));
+        }
+
+        // Setup Scroll Listeners
+        if (this.options.scrollToChange) {
+            window.addEventListener('wheel', this.debounce(this.handleScroll, 300).bind(this));
         }
     };
 
@@ -73,12 +79,12 @@ const Scooch = function (node, options = {}) {
         event.preventDefault();
 
         // Previous slide
-        if (event.keyCode === 37) {
+        if (event.keyCode === 37 || event.keyCode === 38) {
             this.previous();
         }
 
         // Next slide
-        if (event.keyCode === 39 || event.keyCode === 32) {
+        if (event.keyCode === 39 || event.keyCode === 32 || event.keyCode === 40) {
             this.next();
         }
 
@@ -87,6 +93,34 @@ const Scooch = function (node, options = {}) {
             document.body.requestFullscreen();
         }
     };
+
+    // Handle Scroll
+    this.handleScroll = (event) => {
+        let verticalDirection = event.deltaY > 0 ? 'up' : 'down';
+        let horizontalDirection = event.deltaX > 0 ? 'right' : 'left';
+
+        // Next
+        if ( event.deltaY !== 0 && verticalDirection === 'down' ) this.next();
+        if ( event.deltaX !== 0 && horizontalDirection === 'right' ) this.next();
+
+        // Previous
+        if ( event.deltaY !== 0 && verticalDirection === 'up' ) this.previous();
+        if ( event.deltaX !== 0 && horizontalDirection === 'left' ) this.previous();
+    }
+
+    // Debounce
+    this.debounce = (fn, d) => {
+        let timer;
+        return function() {
+            let context = this;
+            let args = arguments;
+            clearTimeout(timer);
+
+            timer = setTimeout(() => {
+                fn.apply(context, args);
+            }, d);
+        }
+    }
 
     // Run Init
     this.init();
