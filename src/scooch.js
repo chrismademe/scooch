@@ -96,16 +96,13 @@ const Scooch = function (node, options = {}) {
 
     // Handle Scroll
     this.handleScroll = (event) => {
-        let verticalDirection = event.deltaY > 0 ? 'up' : 'down';
-        let horizontalDirection = event.deltaX > 0 ? 'right' : 'left';
-
         // Next
-        if ( event.deltaY !== 0 && verticalDirection === 'down' ) this.next();
-        if ( event.deltaX !== 0 && horizontalDirection === 'right' ) this.next();
+        if ( event.deltaY !== 0 && event.deltaY < 0 ) this.next();
+        if ( event.deltaX !== 0 && event.deltaX > 0 ) this.next();
 
         // Previous
-        if ( event.deltaY !== 0 && verticalDirection === 'up' ) this.previous();
-        if ( event.deltaX !== 0 && horizontalDirection === 'left' ) this.previous();
+        if ( event.deltaY !== 0 && event.deltaY > 0 ) this.previous();
+        if ( event.deltaX !== 0 && event.deltaX < 0 ) this.previous();
     }
 
     // Debounce
