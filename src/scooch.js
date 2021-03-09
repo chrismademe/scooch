@@ -5,7 +5,8 @@ const Scooch = function (node, options = {}) {
         autoplayInterval: 5000,
         keyboardControls: true,
         allowFullscreen: true,
-        scrollToChange: true
+        scrollToChange: true,
+        swipeToChange: true
     };
 
     this.options = Object.assign(defaultOptions, options);
@@ -17,6 +18,8 @@ const Scooch = function (node, options = {}) {
     this.currentSlide = null;
     this.nextSlide = null;
     this.previousSlide = null;
+    this.swipeInitialX = null;
+    this.swipeInitialY = null;
 
 	/**
 	 * Init
@@ -33,6 +36,13 @@ const Scooch = function (node, options = {}) {
 
         // Get the next slide
         this.nextSlide = this.firstSlide.nextElementSibling;
+
+        // Stop the container moving if we swipe
+        if ( this.options.swipeToChange )  {
+            console.log('Swipe enabled');
+            this.node.addEventListener('touchstart', this.handleStartSwipe.bind(this), false);
+            this.node.addEventListener('touchmove', this.handleSwipe.bind(this), false);
+        }
 
         // Setup Key Press listeners
         if (this.options.keyboardControls) {
@@ -103,6 +113,38 @@ const Scooch = function (node, options = {}) {
         // Previous
         if ( event.deltaY !== 0 && event.deltaY > 0 ) this.previous();
         if ( event.deltaX !== 0 && event.deltaX < 0 ) this.previous();
+    }
+
+    // Handle Start Swipe
+    this.handleStartSwipe = (event) => {
+        this.swipeInitialX = event.touches[0].clientX;
+        this.swipeInitialY = event.touches[0].clientY;
+    }
+
+    // Handle Swipe
+    this.handleSwipe = (event) => {
+        event.preventDefault();
+
+        // Bail if no touch
+        if ( this.swipeInitialX === null || this.swipeInitialY === null ) return;
+
+        let swipeCurrentX = event.touches[0].clientX;
+        let swipeCurrentY = event.touches[0].clientY;
+        let swipeDiffX = this.swipeInitialX - swipeCurrentX;
+        let swipeDiffY = this.swipeInitialY - swipeCurrentY;
+
+        // Only detect horizontal swipes
+        if ( Math.abs(swipeDiffX) > Math.abs(swipeDiffY) ) {
+            if ( swipeDiffX > 0 ) {
+                this.next();
+            } else {
+                this.previous();
+            }
+        }
+
+        // Clean up
+        this.swipeInitialX = null;
+        this.swipeInitialY = null;
     }
 
     // Debounce

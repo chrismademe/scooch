@@ -4,6 +4,11 @@
 	grid-template-rows: 1fr;
 }
 
+/* We need pointer events set to none for swipe, but we don't want to break clickable elements */
+.scooch *:not(a, button, input[type='button'], input[type='submit']) {
+	pointer-events: none;
+}
+
 .scooch__slide {
 	grid-column: 1;
 	grid-row: 1;
