@@ -28,7 +28,7 @@ const Scooch = function (node, options = {}) {
 	 */
     this.init = () => {
         // Setup the first slide
-        this.firstSlide.style.opacity = 1;
+        this.firstSlide.setAttribute('aria-current', true);
 
         // Register it as the current and previous slides
         this.currentSlide = this.firstSlide;
@@ -39,7 +39,6 @@ const Scooch = function (node, options = {}) {
 
         // Stop the container moving if we swipe
         if ( this.options.swipeToChange )  {
-            console.log('Swipe enabled');
             this.node.addEventListener('touchstart', this.handleStartSwipe.bind(this), false);
             this.node.addEventListener('touchmove', this.handleSwipe.bind(this), false);
         }
@@ -77,11 +76,11 @@ const Scooch = function (node, options = {}) {
             slide === this.lastSlide ? this.firstSlide : this.slides[index + 1];
 
         // Hide the currentSlide
-        this.currentSlide.style.opacity = 0;
+        this.currentSlide.removeAttribute('aria-current');
 
         // Set new slide
         this.currentSlide = slide;
-        this.currentSlide.style.opacity = 1;
+        this.currentSlide.setAttribute('aria-current', true);
     };
 
     // Handle Key Press
