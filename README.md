@@ -1,6 +1,6 @@
 # Scooch
 
-Scooch makes slideshows easy. You bring your own content and styling. It's super lightweight, around 1.5kb gzipped and easy to customise.
+Scooch makes slideshows easy. You bring your own content and styling (aside from some functional styles to make Scooch work). It's super lightweight, around 1.5kb gzipped and easy to customise.
 
 ## Installation
 
@@ -47,8 +47,6 @@ new Scooch(element, { autoplay: false });
 -   Previous Slide: `Left arrow`
 -   Enter Fullscreen: `F`
 -   Exit Fullscreen: `esc`
-
-💡 Tip: Hover over the left bottom corner of the `index.html` demo page to see keyboard controls.
 
 ## Roadmap
 
