@@ -1,33 +1,26 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Scooch Demo</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<head>
+		<title>Scooch Demo</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-        <!-- 01. Include stylesheet -->
-        <link rel="stylesheet" href="src/scooch.css"/>
-    </head>
-    <body>
+		<!-- 01. Include stylesheet -->
+		<link rel="stylesheet" href="src/scooch.css" />
+	</head>
+	<body>
+		<!-- 02. Scooch Markup -->
+		<ul class="scooch">
+			<li class="scooch__slide">Slide 01</li>
+			<li class="scooch__slide">Slide 02</li>
+			<li class="scooch__slide">Slide 03</li>
+		</ul>
 
-        <!-- 02. Scooch Markup -->
-        <ul class="scooch">
-            <li class="scooch__slide">
-                Slide 01
-            </li>
-            <li class="scooch__slide">
-                Slide 02
-            </li>
-            <li class="scooch__slide">
-                Slide 03
-            </li>
-        </ul>
-
-        <!-- 04. Include Scooch JS and instantiate -->
-        <script src="src/scooch.js"></script>
-        <script>
-            (() => {
-                const slideshow = new Scooch(document.querySelector('.scooch'));
-            })()
-        </script>
-    </body>
+		<!-- 04. Include Scooch JS and instantiate -->
+		<script src="src/scooch.js"></script>
+		<script>
+			(() => {
+				const slideshow = new Scooch(document.querySelector('.scooch'));
+			})();
+		</script>
+	</body>
 </html>
