@@ -8,8 +8,12 @@
 }
 
 /* We need pointer events set to none for swipe, but we don't want to break clickable elements */
-.scooch *:not(a, button, input[type='button'], input[type='submit']) {
+.scooch * {
 	pointer-events: none;
+}
+
+.scooch :is(a, button, input[type='button'], input[type='submit']) {
+	pointer-events: initial;
 }
 
 .scooch__slide {
@@ -21,4 +25,5 @@
 
 .scooch__slide[aria-current] {
 	opacity: 1;
+	z-index: 2;
 }
