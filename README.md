@@ -43,12 +43,12 @@ new Scooch(element, { autoplay: false });
 
 ## Keyboard Controls
 
--   Next Slide: `Right arrow`, `space`
--   Previous Slide: `Left arrow`
--   Enter Fullscreen: `F`
--   Exit Fullscreen: `esc`
+-  Next Slide: `Right arrow`, `space`
+-  Previous Slide: `Left arrow`
+-  Enter Fullscreen: `F`
+-  Exit Fullscreen: `esc`
 
 ## Roadmap
 
--   Add lifecycle events (e.g. `init`, `onSlideChange` etc.)
--   Make fullscreen only affect slideshow element
+[x] Add lifecycle events (e.g. `init`, `onSlideChange` etc.) - _added in 1.1.0_
+[ ] Make fullscreen only affect slideshow element
