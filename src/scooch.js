@@ -91,6 +91,9 @@ const Scooch = function (node, options = {}) {
 		this.currentSlide = slide;
 		this.currentSlide.setAttribute('aria-current', true);
 
+		// Dispatch slideChange event
+		this.dispatchEvent('scooch:slideChange', this);
+
 		// Setup a new timer
 		if (this.options.autoplay) {
 			this.timer = setTimeout(this.next.bind(this), this.options.autoplayInterval);
@@ -173,6 +176,10 @@ const Scooch = function (node, options = {}) {
 			}, d);
 		};
 	};
+
+	this.dispatchEvent = (name, detail) {
+		window.dispatchEvent(new CustomEvent(name, { detail: detail }));
+	}
 
 	// Run Init
 	this.init();
