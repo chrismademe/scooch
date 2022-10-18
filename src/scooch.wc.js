@@ -103,6 +103,9 @@ class Scooch extends HTMLElement {
 		this.currentSlide.setAttribute('aria-current', true);
 		this.isChangingSlide = false;
 
+		// Dispatch slideChange event
+		this.dispatchEvent('scooch:slideChange', this);
+
 		// Setup a new timer
 		if (this.options.autoplay) {
 			this.timer = setTimeout(this.next.bind(this), this.options.autoplayInterval);
@@ -184,6 +187,10 @@ class Scooch extends HTMLElement {
 				fn.apply(context, args);
 			}, d);
 		};
+	}
+
+	dispatchEvent(name, detail) {
+		window.dispatchEvent(new CustomEvent(name, { detail: detail }));
 	}
 }
 
