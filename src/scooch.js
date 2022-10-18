@@ -6,7 +6,7 @@ const Scooch = function (node, options = {}) {
 		keyboardControls: true,
 		allowFullscreen: true,
 		scrollToChange: true,
-		swipeToChange: true
+		swipeToChange: true,
 	};
 
 	this.options = Object.assign(defaultOptions, options);
@@ -20,7 +20,7 @@ const Scooch = function (node, options = {}) {
 	this.previousSlide = null;
 	this.swipeInitialX = null;
 	this.swipeInitialY = null;
-	this.isChangingSlide = false;
+	this.timer = null;
 
 	/**
 	 * Init
@@ -40,16 +40,8 @@ const Scooch = function (node, options = {}) {
 
 		// Stop the container moving if we swipe
 		if (this.options.swipeToChange) {
-			this.node.addEventListener(
-				'touchstart',
-				this.handleStartSwipe.bind(this),
-				false
-			);
-			this.node.addEventListener(
-				'touchmove',
-				this.handleSwipe.bind(this),
-				false
-			);
+			this.node.addEventListener('touchstart', this.handleStartSwipe.bind(this), false);
+			this.node.addEventListener('touchmove', this.handleSwipe.bind(this), false);
 		}
 
 		// Setup Key Press listeners
@@ -59,10 +51,7 @@ const Scooch = function (node, options = {}) {
 
 		// Setup Scroll Listeners
 		if (this.options.scrollToChange) {
-			window.addEventListener(
-				'wheel',
-				this.debounce(this.handleScroll, 300).bind(this)
-			);
+			window.addEventListener('wheel', this.debounce(this.handleScroll, 300).bind(this));
 		}
 	};
 
@@ -75,20 +64,25 @@ const Scooch = function (node, options = {}) {
 	};
 
 	this.goToSlide = (index) => {
-		// Check the slide index exists and we're not changing slides already
-		if (!this.slides[index] || this.isChangingSlide) return;
+		if (this.options.autoplay) {
+			/**
+			 * Clear the current timer
+			 *
+			 * This stops odd behaviour where you can manually switch to a slide right before
+			 * the current timer runs out and it will immediate move on the next slide again
+			 */
+			clearTimeout(this.timer);
+		}
+
+		// Check the slide index exists
+		if (!this.slides[index]) return;
 		let slide = this.slides[index];
 
-		// Set flag to stop changing slides more than once at the same time
-		this.isChangingSlide = true;
-
 		// Check if it matches lastSlide
-		this.previousSlide =
-			slide === this.firstSlide ? this.lastSlide : this.slides[index - 1];
+		this.previousSlide = slide === this.firstSlide ? this.lastSlide : this.slides[index - 1];
 
 		// Check if it matches firstSlide
-		this.nextSlide =
-			slide === this.lastSlide ? this.firstSlide : this.slides[index + 1];
+		this.nextSlide = slide === this.lastSlide ? this.firstSlide : this.slides[index + 1];
 
 		// Hide the currentSlide
 		this.currentSlide.removeAttribute('aria-current');
@@ -96,7 +90,11 @@ const Scooch = function (node, options = {}) {
 		// Set new slide
 		this.currentSlide = slide;
 		this.currentSlide.setAttribute('aria-current', true);
-		this.isChangingSlide = false;
+
+		// Setup a new timer
+		if (this.options.autoplay) {
+			this.timer = setTimeout(this.next.bind(this), this.options.autoplayInterval);
+		}
 	};
 
 	// Handle Key Press
@@ -109,11 +107,7 @@ const Scooch = function (node, options = {}) {
 		}
 
 		// Next slide
-		if (
-			event.keyCode === 39 ||
-			event.keyCode === 32 ||
-			event.keyCode === 40
-		) {
+		if (event.keyCode === 39 || event.keyCode === 32 || event.keyCode === 40) {
 			this.next();
 		}
 
@@ -185,6 +179,8 @@ const Scooch = function (node, options = {}) {
 
 	// Autoplay
 	if (this.options.autoplay) {
-		setInterval(this.next.bind(this), this.options.autoplayInterval);
+		this.timer = setTimeout(this.next.bind(this), this.options.autoplayInterval);
 	}
 };
+
+window.dispatchEvent(new CustomEvent('scooch:init'));

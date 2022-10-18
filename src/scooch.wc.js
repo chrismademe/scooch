@@ -7,7 +7,7 @@ class Scooch extends HTMLElement {
 			keyboardControls: this.dataset['keyboard-controls'] || true,
 			allowFullscreen: this.dataset.fullscreen || true,
 			scrollToChange: this.dataset.scroll || true,
-			swipeToChange: this.dataset.swipe || true
+			swipeToChange: this.dataset.swipe || true,
 		};
 
 		this.slides = Array.from(this.querySelectorAll('.scooch__slide'));
@@ -19,6 +19,7 @@ class Scooch extends HTMLElement {
 		this.swipeInitialX = null;
 		this.swipeInitialY = null;
 		this.isChangingSlide = false;
+		this.timer = null;
 		this.init();
 	}
 
@@ -40,16 +41,8 @@ class Scooch extends HTMLElement {
 
 		// Stop the container moving if we swipe
 		if (this.options.swipeToChange) {
-			this.addEventListener(
-				'touchstart',
-				this.handleStartSwipe.bind(this),
-				false
-			);
-			this.addEventListener(
-				'touchmove',
-				this.handleSwipe.bind(this),
-				false
-			);
+			this.addEventListener('touchstart', this.handleStartSwipe.bind(this), false);
+			this.addEventListener('touchmove', this.handleSwipe.bind(this), false);
 		}
 
 		// Setup Key Press listeners
@@ -59,16 +52,15 @@ class Scooch extends HTMLElement {
 
 		// Setup Scroll Listeners
 		if (this.options.scrollToChange) {
-			window.addEventListener(
-				'wheel',
-				this.debounce(this.handleScroll, 300).bind(this)
-			);
+			window.addEventListener('wheel', this.debounce(this.handleScroll, 300).bind(this));
 		}
 
 		// Autoplay
 		if (this.options.autoplay) {
-			setInterval(this.next.bind(this), this.options.autoplayInterval);
+			this.timer = setTimeout(this.next.bind(this), this.options.autoplayInterval);
 		}
+
+		window.dispatchEvent(new CustomEvent('scooch:wcinit', { detail: this }));
 	}
 
 	next() {
@@ -80,6 +72,16 @@ class Scooch extends HTMLElement {
 	}
 
 	goToSlide(index) {
+		if (this.options.autoplay) {
+			/**
+			 * Clear the current timer
+			 *
+			 * This stops odd behaviour where you can manually switch to a slide right before
+			 * the current timer runs out and it will immediate move on the next slide again
+			 */
+			clearTimeout(this.timer);
+		}
+
 		// Check the slide index exists and we're not changing slides already
 		if (!this.slides[index] || this.isChangingSlide) return;
 		let slide = this.slides[index];
@@ -88,12 +90,10 @@ class Scooch extends HTMLElement {
 		this.isChangingSlide = true;
 
 		// Check if it matches lastSlide
-		this.previousSlide =
-			slide === this.firstSlide ? this.lastSlide : this.slides[index - 1];
+		this.previousSlide = slide === this.firstSlide ? this.lastSlide : this.slides[index - 1];
 
 		// Check if it matches firstSlide
-		this.nextSlide =
-			slide === this.lastSlide ? this.firstSlide : this.slides[index + 1];
+		this.nextSlide = slide === this.lastSlide ? this.firstSlide : this.slides[index + 1];
 
 		// Hide the currentSlide
 		this.currentSlide.removeAttribute('aria-current');
@@ -102,6 +102,11 @@ class Scooch extends HTMLElement {
 		this.currentSlide = slide;
 		this.currentSlide.setAttribute('aria-current', true);
 		this.isChangingSlide = false;
+
+		// Setup a new timer
+		if (this.options.autoplay) {
+			this.timer = setTimeout(this.next.bind(this), this.options.autoplayInterval);
+		}
 	}
 
 	// Handle Key Press
@@ -114,11 +119,7 @@ class Scooch extends HTMLElement {
 		}
 
 		// Next slide
-		if (
-			event.keyCode === 39 ||
-			event.keyCode === 32 ||
-			event.keyCode === 40
-		) {
+		if (event.keyCode === 39 || event.keyCode === 32 || event.keyCode === 40) {
 			this.next();
 		}
 
