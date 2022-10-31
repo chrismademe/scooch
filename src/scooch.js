@@ -177,9 +177,9 @@ const Scooch = function (node, options = {}) {
 		};
 	};
 
-	this.dispatchEvent = (name, detail) {
+	this.dispatchEvent = (name, detail) => {
 		window.dispatchEvent(new CustomEvent(name, { detail: detail }));
-	}
+	};
 
 	// Run Init
 	this.init();
